@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+const BASE_URL = 'https://658dd9907c48dce94739c843.mockapi.io/contacts';
+
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        'https://api.mockapi.io/v1/your-user-id/contacts'
-      );
+      const response = await fetch(BASE_URL);
       if (!response.ok) {
         throw new Error('Failed to fetch contacts');
       }
@@ -22,16 +22,13 @@ export const addContact = createAsyncThunk(
   'contacts/addContact',
   async (contact, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        'https://api.mockapi.io/v1/your-user-id/contacts',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(contact),
-        }
-      );
+      const response = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contact),
+      });
       if (!response.ok) {
         throw new Error('Failed to add contact');
       }
@@ -47,12 +44,9 @@ export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `https://api.mockapi.io/v1/your-user-id/contacts/${contactId}`,
-        {
-          method: 'DELETE',
-        }
-      );
+      const response = await fetch(`${BASE_URL}/${contactId}`, {
+        method: 'DELETE',
+      });
       if (!response.ok) {
         throw new Error('Failed to delete contact');
       }
@@ -63,18 +57,15 @@ export const deleteContact = createAsyncThunk(
   }
 );
 
-
-
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
     items: [],
     isLoading: false,
     error: null,
-    filter: '', 
+    filter: '',
   },
   reducers: {
-   
     setFilter: (state, action) => {
       state.filter = action.payload;
     },
