@@ -29,8 +29,13 @@ const App = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const handleAddContact = (name, number) => {
-    dispatch(addContact({ id: Date.now(), name, number }));
+  const handleAddContact = newContact => {
+    if (contacts.some(contact => contact.name === newContact.name)) {
+      console.log('A contact with the same name already exists!');
+      return;
+    }
+
+    dispatch(addContact(newContact));
   };
 
   const handleDeleteContact = contactId => {
