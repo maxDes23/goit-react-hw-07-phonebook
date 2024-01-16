@@ -29,13 +29,8 @@ const App = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const handleAddContact = newContact => {
-    if (contacts.some(contact => contact.name === newContact.name)) {
-      console.log('A contact with the same name already exists!');
-      return;
-    }
-
-    dispatch(addContact(newContact));
+  const handleAddContact = (name, number) => {
+    dispatch(addContact({ id: Date.now(), name, number }));
   };
 
   const handleDeleteContact = contactId => {
@@ -46,22 +41,29 @@ const App = () => {
     dispatch(setFilter(e.target.value));
   };
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+ 
+const filteredContacts = contacts.filter(contact =>
+  contact.name.toLowerCase().includes(filter.toLowerCase())
+);
 
-  return (
-    <Container>
-      <h1>Phonebook</h1>
-      <ContactForm onSubmit={handleAddContact} />
-      <h2>Contacts</h2>
-      <Filter value={filter} onChange={handleFilterChange} />
+return (
+  <Container>
+    <h1>Phonebook</h1>
+    <ContactForm onSubmit={handleAddContact} />
+    <h2>Contacts</h2>
+    <Filter value={filter} onChange={handleFilterChange} />
+
+    
+    {filteredContacts ? (
       <ContactList
         contacts={filteredContacts}
         onDeleteContact={handleDeleteContact}
       />
-    </Container>
-  );
+    ) : (
+      <p>No contacts found.</p>
+    )}
+  </Container>
+);
 };
 
 export default App;
