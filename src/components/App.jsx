@@ -29,6 +29,9 @@ const App = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
+  
+  
+  
   const handleAddContact = (name, number) => {
     dispatch(addContact({ id: Date.now(), name, number }));
   };

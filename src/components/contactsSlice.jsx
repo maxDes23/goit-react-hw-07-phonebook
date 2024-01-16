@@ -20,8 +20,17 @@ export const fetchContacts = createAsyncThunk(
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
-  async (contact, { rejectWithValue }) => {
+  async (contact, { getState, rejectWithValue }) => {
     try {
+      const state = getState();
+      const existingContact = state.contacts.items.find(
+        c => c.name.toLowerCase() === contact.name.toLowerCase()
+      );
+
+      if (existingContact) {
+        throw new Error('Contact with the same name already exists!');
+      }
+
       const response = await fetch(BASE_URL, {
         method: 'POST',
         headers: {
@@ -29,12 +38,15 @@ export const addContact = createAsyncThunk(
         },
         body: JSON.stringify(contact),
       });
+
       if (!response.ok) {
         throw new Error('Failed to add contact');
       }
+
       const data = await response.json();
       return data;
     } catch (error) {
+      window.alert(error.message);
       return rejectWithValue(error.message);
     }
   }
