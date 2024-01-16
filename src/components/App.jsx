@@ -41,29 +41,22 @@ const App = () => {
     dispatch(setFilter(e.target.value));
   };
 
- 
-const filteredContacts = contacts.filter(contact =>
-  contact.name.toLowerCase().includes(filter.toLowerCase())
-);
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
-return (
-  <Container>
-    <h1>Phonebook</h1>
-    <ContactForm onSubmit={handleAddContact} />
-    <h2>Contacts</h2>
-    <Filter value={filter} onChange={handleFilterChange} />
-
-    
-    {filteredContacts ? (
+  return (
+    <Container>
+      <h1>Phonebook</h1>
+      <ContactForm onSubmit={handleAddContact} />
+      <h2>Contacts</h2>
+      <Filter value={filter} onChange={handleFilterChange} />
       <ContactList
         contacts={filteredContacts}
         onDeleteContact={handleDeleteContact}
       />
-    ) : (
-      <p>No contacts found.</p>
-    )}
-  </Container>
-);
+    </Container>
+  );
 };
 
 export default App;
